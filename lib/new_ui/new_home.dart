@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:news_app_riverpod/new_ui/saved_news.dart';
 import 'package:news_app_riverpod/utils/api_provider.dart';
 
 import 'first_page.dart';
@@ -43,8 +44,23 @@ class _NewUiHomePageState extends State<NewUiHomePage> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-          // leading: ,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SavedNews(),
+                ),
+              );
+            },
+            icon: Icon(
+              Icons.favorite_rounded,
+              color: Colors.white,
+            ),
           ),
+        ],
+      ),
       bottomNavigationBar: AnimatedBottomNavigationBar(
         backgroundColor: Colors.black,
         leftCornerRadius: 20,

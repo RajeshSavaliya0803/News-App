@@ -23,12 +23,12 @@ class Prefs {
   }
 
   static Future<void> removeBookmarkNews(
-      int id, Object newsKey, WidgetRef ref) async {
+      dynamic news, Object newsKey, WidgetRef ref) async {
     final box = await Hive.openBox(prefBox);
 
     List<dynamic> newsList = box.get(newsKey) ?? [];
-    newsList.removeAt(id);
-    providerStorage.removeNews(ref, id);
+    newsList.remove(news);
+    providerStorage.removeNews(ref, news);
 
     return box.put(newsKey, newsList);
   }

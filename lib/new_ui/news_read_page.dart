@@ -1,25 +1,55 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
-import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:news_app_riverpod/main.dart';
+import 'package:news_app_riverpod/utils/hive_prefs.dart';
 import 'package:sizer/sizer.dart';
 
-class NewsReadPage extends StatefulWidget {
+class NewsReadPage extends ConsumerStatefulWidget {
   const NewsReadPage({
     super.key,
     required this.news,
   });
   final dynamic news;
   @override
-  State<NewsReadPage> createState() => _NewsReadPageState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _NewsReadPageState();
 }
 
-class _NewsReadPageState extends State<NewsReadPage> {
+class _NewsReadPageState extends ConsumerState<NewsReadPage> {
+  bool isFav = false;
+  List<dynamic> savedNews = [];
+
   String getDays() {
     var time = DateTime.parse(widget.news['publishedAt']);
     Duration days = DateTime.now().difference(time);
     return days.inDays.toString();
+  }
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      checkForFav();
+    });
+    super.initState();
+  }
+
+  void checkForFav() {
+    savedNews = ref.watch(providerStorage.savedNews);
+    if (savedNews.isEmpty) {
+      isFav = false;
+      setState(() {});
+    }
+    for (var i = 0; i < savedNews.length; i++) {
+      if (savedNews[i]['title'] == widget.news['title']) {
+        isFav = true;
+        setState(() {});
+        break;
+      } else {
+        isFav = false;
+        setState(() {});
+      }
+    }
   }
 
   @override
@@ -77,15 +107,36 @@ class _NewsReadPageState extends State<NewsReadPage> {
                             height: 6.h,
                             width: 40.w,
                           ),
+                          SizedBox(width: 2.w),
                           TextHolderContainer(
                             text: '${getDays()} days',
                             height: 6.h,
                             width: 23.w,
                           ),
-                          TextHolderContainer(
-                            text: '${Random().nextInt(499) + 500} Views',
-                            height: 6.h,
-                            width: 23.w,
+                          InkWell(
+                            onTap: () async {
+                              if (isFav) {
+                                await Prefs.removeBookmarkNews(
+                                    widget.news, Prefs.newsKey, ref);
+                              } else {
+                                await Prefs.bookmarkNews(
+                                    widget.news, Prefs.newsKey, ref);
+                              }
+                              print('object');
+                              checkForFav();
+                            },
+                            child: Container(
+                              height: 6.h,
+                              width: 6.h,
+                              padding: EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: Colors.grey[300],
+                                borderRadius: BorderRadius.circular(6.h),
+                              ),
+                              child: Icon(isFav
+                                  ? Icons.favorite
+                                  : Icons.favorite_outline),
+                            ),
                           ),
                         ],
                       ),
@@ -118,6 +169,20 @@ class _NewsReadPageState extends State<NewsReadPage> {
     );
   }
 }
+
+// class NewsReadPage extends StatefulWidget {
+//   const NewsReadPage({
+//     super.key,
+//     required this.news,
+//   });
+//   final dynamic news;
+//   @override
+//   State<NewsReadPage> createState() => _NewsReadPageState();
+// }
+
+// class _NewsReadPageState extends State<NewsReadPage> {
+
+// }
 
 class TextHolderContainer extends StatelessWidget {
   const TextHolderContainer({

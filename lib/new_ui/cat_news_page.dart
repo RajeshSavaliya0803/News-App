@@ -41,76 +41,90 @@ class _CategoryNewsPageState extends State<CategoryNewsPage> {
       itemCount: newsList.length,
       itemBuilder: (context, i) {
         var curNews = newsList[i];
-        return InkWell(
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => NewsReadPage(news: curNews),
-            ),
-          ),
-          child: Container(
-            margin: const EdgeInsets.all(5),
-            width: double.infinity,
-            child: Row(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
-                  child: Image.network(
-                    curNews['urlToImage'],
+        return CatNewsCard(curNews: curNews);
+      },
+    );
+  }
+}
+
+class CatNewsCard extends StatelessWidget {
+  const CatNewsCard({
+    Key? key,
+    required this.curNews,
+  }) : super(key: key);
+
+  final dynamic curNews;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => NewsReadPage(news: curNews),
+        ),
+      ),
+      child: Container(
+        margin: const EdgeInsets.all(5),
+        width: double.infinity,
+        child: Row(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(15),
+              child: Image.network(
+                curNews['urlToImage'],
+                height: 15.h,
+                width: 15.h,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => Center(
+                  child: SizedBox(
                     height: 15.h,
                     width: 15.h,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) => Center(
-                      child: SizedBox(
-                        height: 15.h,
-                        width: 15.h,
-                        child: Center(
-                          child: Text('Image not available.'),
-                        ),
-                      ),
+                    child: Center(
+                      child: Text('Image not available.'),
                     ),
                   ),
                 ),
-                SizedBox(width: 2.h),
-                SizedBox(
-                  width: 57.w,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+              ),
+            ),
+            SizedBox(width: 2.h),
+            SizedBox(
+              width: 57.w,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    curNews['title'] ?? 'No Title',
+                    maxLines: 2,
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 1.5.h,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        curNews['title'] ?? 'No Title',
-                        maxLines: 2,
-                        style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
+                      Text(curNews['publishedAt'].split('T').first),
                       SizedBox(
-                        height: 1.5.h,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(curNews['publishedAt'].split('T').first),
-                          SizedBox(
-                            width: 30.w,
-                            child: Text(
-                              curNews['source']['name'],
-                              maxLines: 1,
-                            ),
-                          ),
-                        ],
+                        width: 30.w,
+                        child: Text(
+                          curNews['source']['name'],
+                          maxLines: 1,
+                        ),
                       ),
                     ],
                   ),
-                ),
-                SizedBox(width: 1.h),
-              ],
+                ],
+              ),
             ),
-          ),
-        );
-      },
+            SizedBox(width: 1.h),
+          ],
+        ),
+      ),
     );
   }
 }

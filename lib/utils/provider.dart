@@ -13,8 +13,8 @@ class ProviderStorage {
     ref.read(savedNews.notifier).addSavedNews(news);
   }
 
-  void removeNews(WidgetRef ref, int index) {
-    ref.read(savedNews.notifier).removeSavedNews(index);
+  void removeNews(WidgetRef ref, dynamic news) {
+    ref.read(savedNews.notifier).removeSavedNews(news);
   }
 }
 
@@ -25,9 +25,9 @@ class SavedNewsNotifier extends StateNotifier<List<dynamic>> {
     state = [...state, newsTitle];
   }
 
-  void removeSavedNews(int index) {
+  void removeSavedNews(dynamic newsTitle) {
     List<dynamic> tempList = [...state];
-    tempList.removeAt(index);
+    tempList.remove(newsTitle);
     state = tempList;
   }
 }

@@ -4,11 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:news_app_riverpod/pages/home.dart';
+import 'package:news_app_riverpod/new_ui/new_home.dart';
 import 'package:news_app_riverpod/utils/provider.dart';
 import 'package:sizer/sizer.dart';
-
-// import 'new_ui/new_home.dart';
 
 final providerStorage = ProviderStorage();
 
@@ -45,7 +43,7 @@ class _MyAppState extends ConsumerState<MyApp> {
             elevation: 0,
           ),
         ),
-        home: HomePage(),
+        home: NewUiHomePage(),
       );
     });
   }
