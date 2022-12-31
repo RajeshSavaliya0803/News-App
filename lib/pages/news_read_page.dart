@@ -122,7 +122,6 @@ class _NewsReadPageState extends ConsumerState<NewsReadPage> {
                                 await Prefs.bookmarkNews(
                                     widget.news, Prefs.newsKey, ref);
                               }
-                              print('object');
                               checkForFav();
                             },
                             child: Container(

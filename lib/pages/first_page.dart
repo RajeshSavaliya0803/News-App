@@ -1,12 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:news_app_riverpod/pages/news_read_page.dart';
 import 'package:sizer/sizer.dart';
 
 import '../widget/home_post_widget.dart';
 
-class FirstPage extends StatelessWidget {
+class FirstPage extends ConsumerWidget {
   const FirstPage({
     Key? key,
     required this.bannerNews,
@@ -17,7 +18,7 @@ class FirstPage extends StatelessWidget {
   final List news;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       color: Colors.white,
       child: Column(
@@ -140,18 +141,26 @@ class FirstPage extends StatelessWidget {
                     itemCount: news.length,
                     itemBuilder: (context, i) {
                       var curNews = news[i];
-                      return InkWell(
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => NewsReadPage(news: curNews),
-                          ),
+                      return LongPressDraggable<Map<String, dynamic>>(
+                        feedback: Image.network(
+                          curNews['urlToImage'],
+                          height: 100,
+                          width: 100,
                         ),
-                        child: NewsWidget(
-                          title: curNews['title'],
-                          time: curNews['publishedAt'],
-                          author: curNews['author'] ?? 'Unknown',
-                          imageUrl: curNews['urlToImage'],
+                        data: curNews,
+                        child: InkWell(
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => NewsReadPage(news: curNews),
+                            ),
+                          ),
+                          child: NewsWidget(
+                            title: curNews['title'],
+                            time: curNews['publishedAt'],
+                            author: curNews['author'] ?? 'Unknown',
+                            imageUrl: curNews['urlToImage'],
+                          ),
                         ),
                       );
                     },

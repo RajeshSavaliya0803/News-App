@@ -44,7 +44,7 @@ class _MyAppState extends ConsumerState<MyApp> {
             elevation: 0,
           ),
         ),
-        home: NewUiHomePage(),
+        home: HomePage(),
       );
     });
   }

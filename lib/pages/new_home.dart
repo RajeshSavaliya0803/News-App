@@ -4,21 +4,23 @@ import 'dart:convert';
 
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 
 import '../utils/api_provider.dart';
+import '../utils/hive_prefs.dart';
 import 'first_page.dart';
 import 'saved_news.dart';
 import 'second_page.dart';
 
-class NewUiHomePage extends StatefulWidget {
-  const NewUiHomePage({super.key});
+class HomePage extends ConsumerStatefulWidget {
+  const HomePage({super.key});
 
   @override
-  State<NewUiHomePage> createState() => _NewUiHomePageState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _HomePageState();
 }
 
-class _NewUiHomePageState extends State<NewUiHomePage> {
+class _HomePageState extends ConsumerState<HomePage> {
   List<dynamic> news = [];
   late dynamic bannerNews;
   List<IconData> navigationIcons = [Icons.home, Icons.category_rounded];
@@ -45,19 +47,26 @@ class _NewUiHomePageState extends State<NewUiHomePage> {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SavedNews(),
+          DragTarget<Map<String, dynamic>>(
+            onAccept: (data) async {
+              await Prefs.bookmarkNews(data, Prefs.newsKey, ref);
+            },
+            builder: (context, candidateData, rejectedData) {
+              return IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SavedNews(),
+                    ),
+                  );
+                },
+                icon: Icon(
+                  Icons.favorite_rounded,
+                  color: Colors.white,
                 ),
               );
             },
-            icon: Icon(
-              Icons.favorite_rounded,
-              color: Colors.white,
-            ),
           ),
         ],
       ),
