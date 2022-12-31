@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:http/http.dart' as http;
-import 'package:news_app_riverpod/utils/provider.dart';
+import 'package:news_app_riverpod/utils/state_provider.dart';
 
 class ApiProvider {
   final String baseURL = 'https://newsapi.org/';

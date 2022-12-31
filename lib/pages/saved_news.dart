@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:news_app_riverpod/main.dart';
-import 'package:news_app_riverpod/new_ui/cat_news_page.dart';
+import 'package:news_app_riverpod/pages/cat_news_page.dart';
 
 class SavedNews extends ConsumerStatefulWidget {
   const SavedNews({super.key});

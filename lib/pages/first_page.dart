@@ -1,10 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:news_app_riverpod/new_ui/news_read_page.dart';
+import 'package:news_app_riverpod/pages/news_read_page.dart';
 import 'package:sizer/sizer.dart';
 
-import '../new_ui/home_post_widget.dart';
+import '../widget/home_post_widget.dart';
 
 class FirstPage extends StatelessWidget {
   const FirstPage({

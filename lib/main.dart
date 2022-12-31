@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:news_app_riverpod/new_ui/new_home.dart';
-import 'package:news_app_riverpod/utils/provider.dart';
 import 'package:sizer/sizer.dart';
+
+import 'pages/new_home.dart';
+import 'utils/state_provider.dart';
 
 final providerStorage = ProviderStorage();
 
